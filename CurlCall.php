@@ -4,6 +4,13 @@ require_once('externals/PhpCache/PhpCache.php');
 
 /**
  * A little library for making curl calls a little easier.
+ *
+ * Example Usage:
+ *
+ *     $curl = new CurlCall();
+ *     $result = $curl->getFromJsonSource($url);
+ *
+ * $result is a PHP array.
  * 
  * @author  Neil Crosby <neil@neilcrosby.com>
  * @license Creative Commons Attribution-Share Alike 3.0 Unported 
@@ -90,6 +97,11 @@ class CurlCall {
         return $result;
     }
     
+    /*
+     * A hack method put together because of needing to use a POST for a big
+     * chunk of data that should have been sent as a get, but that it was too
+     * big.  Best to pretend this doesn't exist for now.
+     */
     public function getFromPhpSourceAsPost($url, $aOptions=array()) {
         $cacheTime = isset($aOptions['cache-time']) ? $aOptions['cache-time'] : 60 * 60 * 24 * 30; // 30 Days default
         $postFields = isset($aOptions['post-fields']) ? $aOptions['post-fields'] : '';
