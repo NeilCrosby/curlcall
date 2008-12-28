@@ -1,5 +1,7 @@
 <?php
 
+require_once('externals/PhpCache/PhpCache.php');
+
 /**
  * A little library for making curl calls a little easier.
  * 
