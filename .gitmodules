@@ -1,0 +1,3 @@
+[submodule "externals/phpcache"]
+	path = externals/phpcache
+	url = git://github.com/NeilCrosby/phpcache.git
