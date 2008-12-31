@@ -8,4 +8,4 @@ Requires the [PhpCache][1] class, which can be imported using [git submodule][2]
     git submodule update
 
 [1]: http://github.com/NeilCrosby/phpcache/tree
-[2]: http://github.com/pat-maddox/giternal/tree
+[2]: http://book.git-scm.com/5_submodules.html
