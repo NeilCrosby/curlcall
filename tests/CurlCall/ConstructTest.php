@@ -12,8 +12,12 @@ class CurlCall_ConstructTest extends PHPUnit_Framework_TestCase {
     public function tearDown() {
     }
 
-    public function testPlaceholder() {
-        $this->markTestIncomplete();
+    public function testCreatesInstanceOfCurlCall() {
+        $obj = new CurlCall();
+        $this->assertThat(
+            $obj,
+            $this->isInstanceOf('CurlCall')
+        );
     }
 
 }

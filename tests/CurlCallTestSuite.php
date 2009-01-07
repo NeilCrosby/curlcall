@@ -20,6 +20,10 @@ if ( !function_exists('__autoload') ) {
     }
 }
 
+if ( !defined('CACHE_PATH') ) {
+    define('CACHE_PATH', '/tmp/cache/curlcalltest/');
+}
+
 /**
  * @author  Neil Crosby <neil@neilcrosby.com>
  * @license Creative Commons Attribution-Share Alike 3.0 Unported 
@@ -46,6 +50,47 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
  
     protected function tearDown() {
     }
+    
+    const TEST_URL_STEM = 'http://curlcalltest:8888/';
+    
+    public static function validSourceProvider($output='php') {
+        $array = array(
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%', 'array'),
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=array', 'array'),
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=string', 'string'),
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=null', 'null'),
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=true', 'bool'),
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=false', 'bool'),
+        );
+        
+        array_walk(
+            $array, 
+            array('CurlCallTestSuite', 'strReplaceWalker'), 
+            array(
+                'find'=>'%output%', 
+                'replace'=>$output
+            )
+        );
+        return $array;
+    }
+
+    private static function strReplaceWalker(&$item, $key, $aOptions) {
+        $item = str_replace($aOptions['find'], $aOptions['replace'], $item);
+    }
+
+    public static function validPhpSourceProvider() {
+        return self::validSourceProvider('php');
+    }
+
+    public static function validJsonSourceProvider() {
+        return self::validSourceProvider('json');
+    }
+
+    public static function validXmlSourceProvider() {
+        // TODO not sure how to endpoint the xml test data yet
+        //return self::validSourceProvider('xml');
+    }
+    
 }
 
 if (PHPUnit_MAIN_METHOD == 'CurlCallTestSuite::main') {
