@@ -1,3 +1,6 @@
 [submodule "externals/phpcache"]
 	path = externals/phpcache
 	url = git://github.com/NeilCrosby/phpcache.git
+[submodule "externals/frontend-test-suite"]
+	path = externals/frontend-test-suite
+	url = git://github.com/NeilCrosby/frontend-test-suite.git
