@@ -10,20 +10,6 @@ class CurlCall_GetFromPhpSourceTest extends PHPUnit_Framework_TestCase {
         $this->obj = new CurlCall();
     }
 
-    public function tearDown() {
-        // on teardown delete the cache
-        $dir = opendir(CACHE_PATH);
-        while ($file = readdir($dir)) {
-            if ( '.' == $file || '..' == $file ) {
-                continue;
-            }
-            unlink(CACHE_PATH.$file);
-        }
-
-        //closing the directory
-        closedir($dir);
-    }
-
     /**
      * @dataProvider CurlCallTestSuite::validPhpSourceProvider
      */

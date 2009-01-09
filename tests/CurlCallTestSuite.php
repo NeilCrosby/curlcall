@@ -46,9 +46,22 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
     }
     
     protected function setUp() {
+        // TODO: PhpCache should actually do this if it can
+        mkdir(CACHE_PATH, 0777, true);
     }
  
     protected function tearDown() {
+        // on teardown delete the cache
+        $dir = opendir(CACHE_PATH);
+        while ($file = readdir($dir)) {
+            if ( '.' == $file || '..' == $file ) {
+                continue;
+            }
+            unlink(CACHE_PATH.$file);
+        }
+
+        //closing the directory
+        closedir($dir);
     }
     
     const TEST_URL_STEM = 'http://curlcalltest:8888/';
