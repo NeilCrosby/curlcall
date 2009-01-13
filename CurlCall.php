@@ -38,10 +38,10 @@ class CurlCall {
     }
 
     private function get($url, $aOptions=array()) {
-        $cacheTime = isset($aOptions['cache-time']) ? $aOptions['cache-time'] : 60 * 60 * 24 * 30; // 30 Days default
-        $type = isset($aOptions['type']) ? $aOptions['type'] : null;
+        $cacheTime  = isset($aOptions['cache-time'])  ? $aOptions['cache-time']  : 60 * 60 * 24 * 30; // 30 Days default
+        $type       = isset($aOptions['type'])        ? $aOptions['type']        : null;
         $cacheIdent = isset($aOptions['cache-ident']) ? $aOptions['cache-ident'] : '';
-        $curlOpts = isset($aOptions['curlopts']) ? $aOptions['curlopts'] : null;
+        $curlOpts   = isset($aOptions['curlopts'])    ? $aOptions['curlopts']    : null;
         
         $cache = new PhpCache( $url.serialize($curlOpts), $cacheTime, $cacheIdent );
 
