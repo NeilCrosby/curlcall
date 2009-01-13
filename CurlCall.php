@@ -41,8 +41,9 @@ class CurlCall {
         $cacheTime = isset($aOptions['cache-time']) ? $aOptions['cache-time'] : 60 * 60 * 24 * 30; // 30 Days default
         $type = isset($aOptions['type']) ? $aOptions['type'] : null;
         $cacheIdent = isset($aOptions['cache-ident']) ? $aOptions['cache-ident'] : '';
+        $curlOpts = isset($aOptions['curlopts']) ? $aOptions['curlopts'] : null;
         
-        $cache = new PhpCache( $url, $cacheTime, $cacheIdent );
+        $cache = new PhpCache( $url.serialize($curlOpts), $cacheTime, $cacheIdent );
 
         if ( $cache->check() ) {
 
@@ -57,9 +58,17 @@ class CurlCall {
 
             $session = curl_init();
 
+            // set any headers the user wants
+            if ( is_array($curlOpts) ) {
+                foreach ($curlOpts as $key => $value) {
+                    curl_setopt($session, $key, $value); 
+                }
+            }
+
+            // then set our expected headers
             curl_setopt( $session, CURLOPT_URL, $url );
             curl_setopt( $session, CURLOPT_HEADER, false );
-            curl_setopt( $session, CURLOPT_RETURNTRANSFER, 1 );    
+            curl_setopt( $session, CURLOPT_RETURNTRANSFER, 1 );
 
             $result = curl_exec( $session );
             $cacheResult = $result;

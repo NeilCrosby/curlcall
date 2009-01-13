@@ -20,6 +20,9 @@ switch($dataType) {
     case 'string':
         $data = $string;
         break;
+    case 'cookie':
+        $data = $_COOKIE;
+        break;
     default:
         $data = $array;
 }

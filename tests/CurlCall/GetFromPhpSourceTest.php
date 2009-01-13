@@ -21,5 +21,27 @@ class CurlCall_GetFromPhpSourceTest extends PHPUnit_Framework_TestCase {
         );
     }
 
+    /**
+     * @dataProvider CurlCallTestSuite::validPhpSourceCookieProvider
+     */
+    public function testCookieDataSentIfRequested($input) {
+        $url    = $input[0];
+        $cookie = $input[1];
+        
+        $result = $this->obj->getFromPhpSource($url, array('curlopts'=>array(CURLOPT_COOKIE=>$cookie)));
+        
+        $intermediateResult = array();
+        foreach ($result as $key=>$value) {
+            array_push($intermediateResult, "$key=$value");
+        }
+        
+        $concatenatedResult = implode(';', $intermediateResult);
+        
+        $this->assertEquals(
+            $cookie,
+            $concatenatedResult
+        );
+    }
+
 }
 ?>

@@ -87,6 +87,27 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
         return $array;
     }
 
+    public static function validSourceCookieProvider($output='php') {
+        $array = array(
+            array(array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=cookie', 'key=valuepair')),
+            array(array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=cookie', 'blah=bloo')),
+            array(array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=cookie', 'blah=bloo;key=valuepair')),
+        );
+        
+        foreach ($array as $key=>$value) {
+            array_walk(
+                $value, 
+                array('CurlCallTestSuite', 'strReplaceWalker'), 
+                array(
+                    'find'=>'%output%', 
+                    'replace'=>$output
+                )
+            );
+            $array[$key] = $value;
+        }
+        return $array;
+    }
+
     private static function strReplaceWalker(&$item, $key, $aOptions) {
         $item = str_replace($aOptions['find'], $aOptions['replace'], $item);
     }
@@ -104,6 +125,14 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
         //return self::validSourceProvider('xml');
     }
     
+    public static function validPhpSourceCookieProvider() {
+        return self::validSourceCookieProvider('php');
+    }
+
+    public static function validJsonSourceCookieProvider() {
+        return self::validSourceCookieProvider('json');
+    }
+
 }
 
 if (PHPUnit_MAIN_METHOD == 'CurlCallTestSuite::main') {
