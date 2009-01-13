@@ -53,55 +53,56 @@ class CurlCall {
             if ( 'xml' == $datatype ) {
                 $result = simplexml_load_string($result);
             }
-
-        } else {
-
-            $session = curl_init();
-
-            // set any headers the user wants
-            if ( is_array($curlOpts) ) {
-                foreach ($curlOpts as $key => $value) {
-                    curl_setopt($session, $key, $value); 
-                }
-            }
-
-            // then set our expected headers
-            curl_setopt( $session, CURLOPT_URL, $url );
-            curl_setopt( $session, CURLOPT_HEADER, false );
-            curl_setopt( $session, CURLOPT_RETURNTRANSFER, 1 );
-
-            $result = curl_exec( $session );
-            $cacheResult = $result;
-            curl_close( $session );
-
-            switch ($type) {
-                case 'php':
-                    $result = unserialize($result);
-                    $cacheResult = $result;
-                    $datatype = 'php';
-                    break;
-                case 'json':
-                    $result = json_decode($result, true);
-                    $cacheResult = $result;
-                    $datatype = 'php'; // ya rly
-                    break;
-                case 'xml':
-                    $result = simplexml_load_string($result);
-                    $datatype = 'xml';
-                    break;
-                default:
-                    break;
-            }
             
-            $cache->set(
-                array(
-                    'url'=>$url,
-                    'method'=>'get',
-                    'datatype'=>$datatype,
-                    'data'=>$cacheResult
-                )
-            );
+            return $result;
+
         }
+
+        $session = curl_init();
+
+        // set any headers the user wants
+        if ( is_array($curlOpts) ) {
+            foreach ($curlOpts as $key => $value) {
+                curl_setopt($session, $key, $value); 
+            }
+        }
+
+        // then set our expected headers
+        curl_setopt( $session, CURLOPT_URL, $url );
+        curl_setopt( $session, CURLOPT_HEADER, false );
+        curl_setopt( $session, CURLOPT_RETURNTRANSFER, 1 );
+
+        $result = curl_exec( $session );
+        $cacheResult = $result;
+        curl_close( $session );
+
+        switch ($type) {
+            case 'php':
+                $result = unserialize($result);
+                $cacheResult = $result;
+                $datatype = 'php';
+                break;
+            case 'json':
+                $result = json_decode($result, true);
+                $cacheResult = $result;
+                $datatype = 'php'; // ya rly
+                break;
+            case 'xml':
+                $result = simplexml_load_string($result);
+                $datatype = 'xml';
+                break;
+            default:
+                break;
+        }
+        
+        $cache->set(
+            array(
+                'url'=>$url,
+                'method'=>'get',
+                'datatype'=>$datatype,
+                'data'=>$cacheResult
+            )
+        );
         
         return $result;
     }
