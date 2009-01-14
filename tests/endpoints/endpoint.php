@@ -1,7 +1,7 @@
 <?php
 
-$dataType = isset($_GET['type']) ? $_GET['type'] : 'array';
-$output   = isset($_GET['output']) ? $_GET['output'] : 'php';
+$dataType = isset($_REQUEST['type'])   ? $_REQUEST['type']   : 'array';
+$output   = isset($_REQUEST['output']) ? $_REQUEST['output'] : 'php';
 
 $array = array('some_data', 'some other data');
 $string = 'some_data';
@@ -22,6 +22,12 @@ switch($dataType) {
         break;
     case 'cookie':
         $data = $_COOKIE;
+        break;
+    case 'get':
+        $data = $_GET;
+        break;
+    case 'post':
+        $data = $_POST;
         break;
     default:
         $data = $array;

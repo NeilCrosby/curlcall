@@ -11,6 +11,28 @@ class CurlCall_GetFromPhpSourceTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @dataProvider CurlCallTestSuite::validPhpGetReturningSourceProvider
+     */
+    public function testSendsDataViaGet($input, $output) {
+        $pieces = explode('?', $input);
+        $expectedSize = sizeof(explode('&', $pieces[1]));
+
+        $result = $this->obj->getFromPhpSource($input);
+        $this->assertEquals(
+            $expectedSize,
+            sizeof($result)
+        );
+
+        // now ask for the post array instead. It should be empty
+        $input = str_replace('=get', '=post', $input);
+        $result = $this->obj->getFromPhpSource($input);
+        $this->assertEquals(
+            0,
+            sizeof($result)
+        );
+    }
+
+    /**
      * @dataProvider CurlCallTestSuite::validPhpSourceProvider
      */
     public function testReturnsExpectedDataTypeIfSingleValidUrlGiven($input, $output) {

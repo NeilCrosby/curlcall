@@ -10,6 +10,10 @@ class CurlCall_GetFromJsonSourceTest extends PHPUnit_Framework_TestCase {
         $this->obj = new CurlCall();
     }
 
+    public function testSendsDataViaGet() {
+        $this->markTestIncomplete();
+    }
+    
     /**
      * @dataProvider CurlCallTestSuite::validJsonSourceProvider
      */

@@ -108,6 +108,65 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
         return $array;
     }
 
+    public static function validPostSourceProvider($output='php') {
+        $array = array(
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%'), 'array'),
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%&type=array'), 'array'),
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%&type=string'), 'string'),
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%&type=null'), 'null'),
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%&type=true'), 'bool'),
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%&type=false'), 'bool'),
+        );
+        
+        foreach ($array as $key=>$value) {
+            array_walk(
+                $value, 
+                array('CurlCallTestSuite', 'strReplaceWalker'), 
+                array(
+                    'find'=>'%output%', 
+                    'replace'=>$output
+                )
+            );
+            $array[$key] = $value;
+        }
+        return $array;
+    }
+
+    public static function validPostReturningPostSourceProvider($output='php') {
+        $array = array(
+            array(array(self::TEST_URL_STEM.'endpoint.php', 'output=%output%&type=post'), 'array'),
+        );
+        
+        foreach ($array as $key=>$value) {
+            array_walk(
+                $value, 
+                array('CurlCallTestSuite', 'strReplaceWalker'), 
+                array(
+                    'find'=>'%output%', 
+                    'replace'=>$output
+                )
+            );
+            $array[$key] = $value;
+        }
+        return $array;
+    }
+
+    public static function validGetReturningSourceProvider($output='php') {
+        $array = array(
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=get', 'array'),
+        );
+        
+        array_walk(
+            $array, 
+            array('CurlCallTestSuite', 'strReplaceWalker'), 
+            array(
+                'find'=>'%output%', 
+                'replace'=>$output
+            )
+        );
+        return $array;
+    }
+
     private static function strReplaceWalker(&$item, $key, $aOptions) {
         $item = str_replace($aOptions['find'], $aOptions['replace'], $item);
     }
@@ -131,6 +190,30 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
 
     public static function validJsonSourceCookieProvider() {
         return self::validSourceCookieProvider('json');
+    }
+
+    public static function validPhpPostSourceProvider() {
+        return self::validPostSourceProvider('php');
+    }
+
+    public static function validJsonPostSourceProvider() {
+        return self::validPostSourceProvider('json');
+    }
+
+    public static function validPhpPostReturningPostSourceProvider() {
+        return self::validPostReturningPostSourceProvider('php');
+    }
+
+    public static function validJsonPostReturningPostSourceProvider() {
+        return self::validPostReturningPostSourceProvider('json');
+    }
+
+    public static function validPhpGetReturningSourceProvider() {
+        return self::validGetReturningSourceProvider('php');
+    }
+
+    public static function validJsonGetReturningSourceProvider() {
+        return self::validGetReturningSourceProvider('json');
     }
 
 }

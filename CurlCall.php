@@ -116,8 +116,9 @@ class CurlCall {
         $cacheTime = isset($aOptions['cache-time']) ? $aOptions['cache-time'] : 60 * 60 * 24 * 30; // 30 Days default
         $postFields = isset($aOptions['post-fields']) ? $aOptions['post-fields'] : '';
         $cacheIdent = isset($aOptions['cache-ident']) ? $aOptions['cache-ident'] : '';
+        $curlOpts   = isset($aOptions['curlopts'])    ? $aOptions['curlopts']    : null;
         
-        $cache = new PhpCache( $url.'?'.$postFields, $cacheTime, $cacheIdent );
+        $cache = new PhpCache( $url.'#POST?'.$postFields.serialize($curlOpts), $cacheTime, $cacheIdent );
 
         if ( $cache->check() ) {
 
@@ -127,6 +128,13 @@ class CurlCall {
         } else {
 
             $session = curl_init();
+
+            // set any headers the user wants
+            if ( is_array($curlOpts) ) {
+                foreach ($curlOpts as $key => $value) {
+                    curl_setopt($session, $key, $value); 
+                }
+            }
 
             curl_setopt( $session, CURLOPT_URL, $url );
             curl_setopt( $session, CURLOPT_HEADER, false );
