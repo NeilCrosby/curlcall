@@ -10,10 +10,28 @@ class CurlCall_GetFromJsonSourceTest extends PHPUnit_Framework_TestCase {
         $this->obj = new CurlCall();
     }
 
-    public function testSendsDataViaGet() {
-        $this->markTestIncomplete();
+    /**
+     * @dataProvider CurlCallTestSuite::validJsonGetReturningSourceProvider
+     */
+    public function testSendsDataViaGet($input, $output) {
+        $pieces = explode('?', $input);
+        $expectedSize = sizeof(explode('&', $pieces[1]));
+
+        $result = $this->obj->getFromJsonSource($input);
+        $this->assertEquals(
+            $expectedSize,
+            sizeof($result)
+        );
+
+        // now ask for the post array instead. It should be empty
+        $input = str_replace('=get', '=post', $input);
+        $result = $this->obj->getFromJsonSource($input);
+        $this->assertEquals(
+            0,
+            sizeof($result)
+        );
     }
-    
+
     /**
      * @dataProvider CurlCallTestSuite::validJsonSourceProvider
      */
