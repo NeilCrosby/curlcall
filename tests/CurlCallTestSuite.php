@@ -1,22 +1,10 @@
 <?php
-
+$dir = pathinfo(__FILE__, PATHINFO_DIRNAME);
+$paths = array("$dir/../externals/frontend-test-suite/suite", "$dir/..");
+set_include_path(get_include_path().PATH_SEPARATOR.implode(PATH_SEPARATOR, $paths));
 if ( !function_exists('__autoload') ) {
     function __autoload($class) {
-        $class = str_replace( '_', '/', $class );
-        $aLocations = array('../externals/frontend-test-suite/suite', '.', '..');
-
-        foreach( $aLocations as $location ) {
-            $file = "$location/$class.php";
-            if ( file_exists( $file ) ) {
-                include_once( $file );
-                return;
-            }
-        }
-
-        // Check to see if we managed to declare the class
-        if (!class_exists($class, false)) {
-            trigger_error("Unable to load class: $class", E_USER_WARNING);
-        }
+        require_once( str_replace( '_', '/', $class ).'.php' );
     }
 }
 
@@ -43,6 +31,12 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
         }
 
         return $suite;
+    }
+    
+    public static function autoload($class) {
+        $class = str_replace( '_', '/', $class );
+        error_log($class);
+        require_once( $class.'.php' );
     }
     
     protected function setUp() {
