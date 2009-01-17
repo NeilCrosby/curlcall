@@ -1,5 +1,7 @@
 <?php
 
+require_once(pathinfo(__FILE__, PATHINFO_DIRNAME).'/../CurlCallTestSuite.php');
+
 /**
  * @author  Neil Crosby <neil@neilcrosby.com>
  * @license Creative Commons Attribution-Share Alike 3.0 Unported 

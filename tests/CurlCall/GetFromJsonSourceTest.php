@@ -1,17 +1,6 @@
 <?php
 
-$dir = pathinfo(__FILE__, PATHINFO_DIRNAME);
-$paths = array("$dir/../../externals/frontend-test-suite/suite", "$dir/../..", "$dir/..");
-set_include_path(get_include_path().PATH_SEPARATOR.implode(PATH_SEPARATOR, $paths));
-if ( !function_exists('__autoload') ) {
-    function __autoload($class) {
-        require_once( str_replace( '_', '/', $class ).'.php' );
-    }
-}
-
-if ( !defined('CACHE_PATH') ) {
-    define('CACHE_PATH', '/tmp/cache/curlcalltest/');
-}
+require_once(pathinfo(__FILE__, PATHINFO_DIRNAME).'/../CurlCallTestSuite.php');
 
 /**
  * @author  Neil Crosby <neil@neilcrosby.com>
