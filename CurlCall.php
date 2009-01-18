@@ -37,6 +37,20 @@ class CurlCall {
         return $this->get($url, $aOptions);
     }
 
+    public function getFromPhpSourceAsPost($url, $aOptions=array()) {
+        $postFields = isset($aOptions['post-fields']) ? $aOptions['post-fields'] : '';
+
+        if (!isset($aOptions['curlopts'])) {
+            $aOptions['curlopts'] = array();
+        }
+        
+        $aOptions['curlopts'][CURLOPT_POST] = 1;
+        $aOptions['curlopts'][CURLOPT_POSTFIELDS] = $postFields;
+
+        $aOptions['type'] = 'php';
+        return $this->get($url, $aOptions);
+    }
+
     private function get($url, $aOptions=array()) {
         $cacheTime  = isset($aOptions['cache-time'])  ? $aOptions['cache-time']  : 60 * 60 * 24 * 30; // 30 Days default
         $type       = isset($aOptions['type'])        ? $aOptions['type']        : null;
@@ -105,21 +119,6 @@ class CurlCall {
         );
         
         return $result;
-    }
-    
-    public function getFromPhpSourceAsPost($url, $aOptions=array()) {
-        $postFields = isset($aOptions['post-fields']) ? $aOptions['post-fields'] : '';
-
-        if (!isset($aOptions['curlopts'])) {
-            $aOptions['curlopts'] = array();
-        }
-        
-        $aOptions['curlopts'][CURLOPT_POST] = 1;
-        $aOptions['curlopts'][CURLOPT_POSTFIELDS] = $postFields;
-
-        $aOptions['type'] = 'php';
-        return $this->get($url, $aOptions);
-    }
-    
+    }    
 }
 
