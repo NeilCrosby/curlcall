@@ -107,56 +107,18 @@ class CurlCall {
         return $result;
     }
     
-    /*
-     * A hack method put together because of needing to use a POST for a big
-     * chunk of data that should have been sent as a get, but that it was too
-     * big.  Best to pretend this doesn't exist for now.
-     */
     public function getFromPhpSourceAsPost($url, $aOptions=array()) {
-        $cacheTime = isset($aOptions['cache-time']) ? $aOptions['cache-time'] : 60 * 60 * 24 * 30; // 30 Days default
         $postFields = isset($aOptions['post-fields']) ? $aOptions['post-fields'] : '';
-        $cacheIdent = isset($aOptions['cache-ident']) ? $aOptions['cache-ident'] : '';
-        $curlOpts   = isset($aOptions['curlopts'])    ? $aOptions['curlopts']    : null;
-        
-        $cache = new PhpCache( $url.'#POST?'.$postFields.serialize($curlOpts), $cacheTime, $cacheIdent );
 
-        if ( $cache->check() ) {
-
-            $result = $cache->get();
-            $result = $result['data'];
-
-        } else {
-
-            $session = curl_init();
-
-            // set any headers the user wants
-            if ( is_array($curlOpts) ) {
-                foreach ($curlOpts as $key => $value) {
-                    curl_setopt($session, $key, $value); 
-                }
-            }
-
-            curl_setopt( $session, CURLOPT_URL, $url );
-            curl_setopt( $session, CURLOPT_HEADER, false );
-            curl_setopt( $session, CURLOPT_RETURNTRANSFER, 1 );    
-            curl_setopt( $session, CURLOPT_POST, 1);
-            curl_setopt( $session, CURLOPT_POSTFIELDS, $postFields );
-
-            $result = curl_exec( $session );
-            curl_close( $session );
-
-            $result = unserialize($result);
-
-            $cache->set(
-                array(
-                    'url'=>$url,
-                    'method'=>'getFromPhpSourceAsPost',
-                    'data'=>$result
-                )
-            );
+        if (!isset($aOptions['curlopts'])) {
+            $aOptions['curlopts'] = array();
         }
         
-        return $result;
+        $aOptions['curlopts'][CURLOPT_POST] = 1;
+        $aOptions['curlopts'][CURLOPT_POSTFIELDS] = $postFields;
+
+        $aOptions['type'] = 'php';
+        return $this->get($url, $aOptions);
     }
     
 }
