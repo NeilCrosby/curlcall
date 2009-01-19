@@ -54,8 +54,7 @@ class CurlCall_GetFromPhpSourceAsPostTest extends PHPUnit_Framework_TestCase {
      * @dataProvider CurlCallTestSuite::validPhpSourceCookieProvider
      */
     public function testCookieDataSentIfRequested($input) {
-        $this->markTestIncomplete();
-/*        $url    = $input[0];
+        $url    = $input[0];
         $cookie = $input[1];
         
         $result = $this->obj->getFromPhpSourceAsPost($url, array('curlopts'=>array(CURLOPT_COOKIE=>$cookie)));
@@ -70,7 +69,7 @@ class CurlCall_GetFromPhpSourceAsPostTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(
             $cookie,
             $concatenatedResult
-        );*/
+        );
     }
 
 }
