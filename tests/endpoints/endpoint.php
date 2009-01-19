@@ -2,6 +2,11 @@
 
 $dataType = isset($_REQUEST['type'])   ? $_REQUEST['type']   : 'array';
 $output   = isset($_REQUEST['output']) ? $_REQUEST['output'] : 'php';
+$delay    = isset($_REQUEST['delay'])  ? $_REQUEST['delay']  : null;
+
+if ($delay && is_numeric($delay)) {
+    usleep($delay);
+}
 
 $array = array('some_data', 'some other data');
 $string = 'some_data';

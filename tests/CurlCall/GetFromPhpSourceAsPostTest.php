@@ -71,6 +71,31 @@ class CurlCall_GetFromPhpSourceAsPostTest extends PHPUnit_Framework_TestCase {
             $concatenatedResult
         );
     }
+    
+    /**
+     * @dataProvider CurlCallTestSuite::validPhpPostReturningPostSourceProvider
+     */
+    public function testUsesCacheWhereApplicable($input) {
+        $delay = 300000;
+        
+        $url  = $input[0];
+        $post = $input[1];
+
+        $timeBefore = microtime(true);
+        $result = $this->obj->getFromPhpSourceAsPost($url, array('post-fields'=>$post."&delay=$delay"));
+        $this->assertGreaterThanOrEqual(
+            $delay,
+            1000000 * (microtime(true) - $timeBefore)
+        );
+
+        $timeBefore = microtime(true);
+        $result = $this->obj->getFromPhpSourceAsPost($url, array('post-fields'=>$post));
+        $this->assertLessThan(
+            $delay,
+            1000000 * (microtime(true) - $timeBefore)
+        );
+        
+    }
 
 }
 ?>
