@@ -76,7 +76,7 @@ class CurlCall_GetFromPhpSourceAsPostTest extends PHPUnit_Framework_TestCase {
      * @dataProvider CurlCallTestSuite::validPhpPostReturningPostSourceProvider
      */
     public function testUsesCacheWhereApplicable($input) {
-        $delay = 300000;
+        $delay = 10000;
         
         $url  = $input[0];
         $post = $input[1];

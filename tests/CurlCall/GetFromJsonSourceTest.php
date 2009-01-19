@@ -67,6 +67,28 @@ class CurlCall_GetFromJsonSourceTest extends PHPUnit_Framework_TestCase {
         );
     }
 
+    /**
+     * @dataProvider CurlCallTestSuite::validJsonSourceProvider
+     */
+    public function testUsesCacheWhereApplicable($input) {
+        $delay = 10000;
+        
+        $timeBefore = microtime(true);
+        $result = $this->obj->getFromJsonSource($input."&delay=$delay");
+        $this->assertGreaterThanOrEqual(
+            $delay,
+            1000000 * (microtime(true) - $timeBefore)
+        );
+
+        $timeBefore = microtime(true);
+        $result = $this->obj->getFromJsonSource($input."&delay=$delay");
+        $this->assertLessThan(
+            $delay,
+            1000000 * (microtime(true) - $timeBefore)
+        );
+        
+    }
+
 }
 
 ?>

@@ -67,5 +67,27 @@ class CurlCall_GetFromPhpSourceTest extends PHPUnit_Framework_TestCase {
         );
     }
 
+    /**
+     * @dataProvider CurlCallTestSuite::validPhpSourceProvider
+     */
+    public function testUsesCacheWhereApplicable($input) {
+        $delay = 10000;
+        
+        $timeBefore = microtime(true);
+        $result = $this->obj->getFromPhpSource($input."&delay=$delay");
+        $this->assertGreaterThanOrEqual(
+            $delay,
+            1000000 * (microtime(true) - $timeBefore)
+        );
+
+        $timeBefore = microtime(true);
+        $result = $this->obj->getFromPhpSource($input."&delay=$delay");
+        $this->assertLessThan(
+            $delay,
+            1000000 * (microtime(true) - $timeBefore)
+        );
+        
+    }
+
 }
 ?>
