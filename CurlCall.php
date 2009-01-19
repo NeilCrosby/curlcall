@@ -91,11 +91,6 @@ class CurlCall {
         curl_close( $session );
 
         switch ($type) {
-            case 'php':
-                $result = unserialize($result);
-                $cacheResult = $result;
-                $datatype = 'php';
-                break;
             case 'json':
                 $result = json_decode($result, true);
                 $cacheResult = $result;
@@ -106,7 +101,9 @@ class CurlCall {
                 $datatype = 'xml';
                 break;
             default:
-                break;
+                $result = unserialize($result);
+                $cacheResult = $result;
+                $datatype = 'php';
         }
         
         $cache->set(
