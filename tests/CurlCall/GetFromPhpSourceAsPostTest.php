@@ -89,7 +89,7 @@ class CurlCall_GetFromPhpSourceAsPostTest extends PHPUnit_Framework_TestCase {
         );
 
         $timeBefore = microtime(true);
-        $result = $this->obj->getFromPhpSourceAsPost($url, array('post-fields'=>$post));
+        $result = $this->obj->getFromPhpSourceAsPost($url, array('post-fields'=>$post."&delay=$delay"));
         $this->assertLessThan(
             $delay,
             1000000 * (microtime(true) - $timeBefore)
