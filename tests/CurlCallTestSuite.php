@@ -148,6 +148,7 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
     public static function validGetReturningSourceProvider($output='php') {
         $array = array(
             array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=get', 'array'),
+            array(self::TEST_URL_STEM.'endpoint.php?output=%output%&type=get&moredata=somedata', 'array'),
         );
         
         array_walk(
@@ -175,7 +176,7 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
 
     public static function validXmlSourceProvider() {
         // TODO not sure how to endpoint the xml test data yet
-        //return self::validSourceProvider('xml');
+        return self::validSourceProvider('xml');
     }
     
     public static function validPhpSourceCookieProvider() {
@@ -184,6 +185,10 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
 
     public static function validJsonSourceCookieProvider() {
         return self::validSourceCookieProvider('json');
+    }
+
+    public static function validXmlSourceCookieProvider() {
+        return self::validSourceCookieProvider('xml');
     }
 
     public static function validPhpPostSourceProvider() {
@@ -208,6 +213,10 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
 
     public static function validJsonGetReturningSourceProvider() {
         return self::validGetReturningSourceProvider('json');
+    }
+
+    public static function validXmlGetReturningSourceProvider() {
+        return self::validGetReturningSourceProvider('xml');
     }
 
 }
