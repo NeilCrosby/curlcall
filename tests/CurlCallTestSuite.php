@@ -80,6 +80,17 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
         );
         return $array;
     }
+    
+    public static function validMultipleSourcesProvider($output='php') {
+        $in = array();
+        $out = array();
+        $temp = self::validSourceProvider($output);
+        foreach ($temp as $item) {
+            array_push($in,  $item[0]);
+            array_push($out, $item[1]);
+        }
+        return array(array($in, $out));
+    }
 
     public static function validSourceCookieProvider($output='php') {
         $array = array(
@@ -175,8 +186,19 @@ class CurlCallTestSuite extends TheCodeTrainBaseTestSuite {
     }
 
     public static function validXmlSourceProvider() {
-        // TODO not sure how to endpoint the xml test data yet
         return self::validSourceProvider('xml');
+    }
+    
+    public static function validPhpMultipleSourcesProvider() {
+        return self::validMultipleSourcesProvider('php');
+    }
+
+    public static function validJsonMultipleSourcesProvider() {
+        return self::validMultipleSourcesProvider('json');
+    }
+
+    public static function validXmlMultipleSourcesProvider() {
+        return self::validMultipleSourcesProvider('xml');
     }
     
     public static function validPhpSourceCookieProvider() {

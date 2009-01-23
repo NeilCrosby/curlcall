@@ -41,5 +41,11 @@ class CurlCall_GetFromPhpSourceTest extends CurlCall_GetFromSomeSourceTest {
         parent::testUsesCacheWhereApplicable($input);
     }
 
+    /**
+     * @dataProvider CurlCallTestSuite::validPhpMultipleSourcesProvider
+     */
+    public function testReturnsArrayOfExpectedDataTypesIfMultipleValidUrlsGiven($input, $output) {
+        parent::testReturnsArrayOfExpectedDataTypesIfMultipleValidUrlsGiven($input, $output);
+    }
 }
 ?>

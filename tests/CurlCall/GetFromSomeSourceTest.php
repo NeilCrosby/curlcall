@@ -12,6 +12,20 @@ abstract class CurlCall_GetFromSomeSourceTest extends PHPUnit_Framework_TestCase
         $this->obj = new CurlCall();
     }
 
+    protected function tearDown() {
+        // on teardown delete the cache
+        $dir = opendir(CACHE_PATH);
+        while ($file = readdir($dir)) {
+            if ( '.' == $file || '..' == $file ) {
+                continue;
+            }
+            unlink(CACHE_PATH.$file);
+        }
+
+        //closing the directory
+        closedir($dir);
+    }
+    
     /**
      * @dataProvider CurlCallTestSuite::validGetReturningSourceProvider
      */
@@ -88,6 +102,30 @@ abstract class CurlCall_GetFromSomeSourceTest extends PHPUnit_Framework_TestCase
         );
         
     }
+    
+    /**
+     * @dataProvider CurlCallTestSuite::validMultipleSourcesProvider
+     */
+    public function testReturnsArrayOfExpectedDataTypesIfMultipleValidUrlsGiven($input, $output) {
+        $result = $this->obj->{$this->method}($input);
+        $this->assertType(
+            'array',
+            $result
+        );
+        
+        $this->assertEquals(
+            sizeof($input),
+            sizeof($result)
+        );
+        
+        foreach ( $result as $key=>$item ) {
+            $this->assertType(
+                $output[$key],
+                $item
+            );
+        }
+    }
+
 
 }
 ?>
