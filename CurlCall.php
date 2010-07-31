@@ -67,6 +67,16 @@ class CurlCall {
         
         $aOptions['curlopts'][CURLOPT_POST] = 1;
         $aOptions['curlopts'][CURLOPT_POSTFIELDS] = $postFields;
+        $aOptions['curlopts'][CURLOPT_HTTPHEADER] = array(
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language: en-us,en;q=0.5",
+            "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7",
+            "Keep-Alive: 300",
+            "Connection: keep-alive",
+            "Pragma: no-cache",
+            "Cache-Control: no-cache",
+            "Expect: "
+        );
 
         $aOptions['type'] = 'php';
         return $this->get($url, $aOptions);
@@ -80,6 +90,7 @@ class CurlCall {
         $cacheTime  = isset($aOptions['cache-time'])  ? $aOptions['cache-time']  : 60 * 60 * 24 * 30; // 30 Days default
         $type       = isset($aOptions['type'])        ? $aOptions['type']        : null;
         $cacheIdent = isset($aOptions['cache-ident']) ? $aOptions['cache-ident'] : '';
+        $userAgent  = isset($aOptions['user-agent'])  ? $aOptions['user-agent']  : 'CurlCall (http://github.com/NeilCrosby/curlcall/)';
         $curlOpts   = isset($aOptions['curlopts'])    ? $aOptions['curlopts']    : null;
         
         $cache = new PhpCache( $url.serialize($curlOpts), $cacheTime, $cacheIdent );
@@ -110,6 +121,7 @@ class CurlCall {
         curl_setopt( $session, CURLOPT_URL, $url );
         curl_setopt( $session, CURLOPT_HEADER, false );
         curl_setopt( $session, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $session, CURLOPT_USERAGENT, $userAgent );
 
         $result = curl_exec( $session );
         $cacheResult = $result;
